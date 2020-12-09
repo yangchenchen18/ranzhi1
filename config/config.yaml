@@ -1,0 +1,7 @@
+# yaml文件写法：
+# 变量后面要有冒号，冒号后面要跟一个空格
+
+LoginPage:
+  ACCOUNT: 'id account'
+  PASSWORD: 'id password'
+  SUBMIT: 'id submit'
