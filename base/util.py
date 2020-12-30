@@ -10,6 +10,7 @@ import openpyxl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
+import pymysql
 class BoxDriver:
 
     '''工具类'''
@@ -197,7 +198,7 @@ class GetCsv:
             content=file.readlines()
         l=[]
         for i in content:
-            i.strip()
+            i.strip().split()
             return l.append(tuple(i))
     
     
@@ -323,6 +324,35 @@ class SendMail:
         self.smtp.sendmail(sender,receivers.split(';'),self.mail.as_string())
         self.smtp.close()
         print('邮件发送完毕')
+
+class mysql:
+    def connect(self,db):
+        self.host=db['host']
+        self.port=db['port']
+        self.user=db['user']
+        self.pwd=db['pwd']
+        self.name=db['name']
+        try:
+            conn=pymysql.connect(host=self.host,port=self.port,user=self.user,pwd=self.pwd,name=self.name)
+            print("数据库连接成功")
+            return conn
+        except Exception as e:
+            print(e)
+    def disconnect(self,conn):
+        try:
+            conn.close()
+            print("数据库断开成功")
+        except Exception as e:
+            print(f"异常信息为：{e}")   
+    def excute(self,conn,sql):
+        try:
+            c=conn.cursor()#获取游标
+            c.execute(sql)
+            conn.commit()
+            c.close()#关闭游标
+            print("数据库查询成功")
+        except Exception as e:
+            print(f"数据库连接失败，错误信息为：{e}")
 
 
 if __name__ == "__main__":
